@@ -10,12 +10,16 @@ var mongoose = require('mongoose'),
  * Audiodoc Schema
  */
 var AudiodocSchema = new Schema({
-	name: {
+	subject: {
 		type: String,
 		default: '',
 		required: 'Please fill Audiodoc name',
 		trim: true
 	},
+    content: {
+      type: String,
+      default: ''
+    },
 	created: {
 		type: Date,
 		default: Date.now

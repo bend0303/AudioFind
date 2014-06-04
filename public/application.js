@@ -8,7 +8,29 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	function($locationProvider) {
 		$locationProvider.hashPrefix('!');
 	}
-]);
+]).run( function($rootScope, $location, $http) {
+
+//    $rootScope.isLogged = function (url) {
+//
+//        var responsePromise = $http.get("/users/me");
+//
+//        responsePromise.success(function(data, status, headers, config) {
+//            if (data == "null") {
+//                $location.path("/land");
+//            } else if (url.next == "/land") {
+//                $location.path("/home")
+//            }
+//        });
+//        responsePromise.error(function(data, status, headers, config) {
+//            $location.path("/land");
+//        });
+//    }
+//    // register listener to watch route changes
+//    $rootScope.$on("$stateChangeStart", function (event, next, current) {
+//        $rootScope.isLogged(next.url);
+//
+//    });
+});
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {

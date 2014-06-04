@@ -1,6 +1,7 @@
 <section data-ng-controller="AudiodocsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="audiodoc.name"></h1>
+		<h1 data-ng-bind="audiodoc.subject"></h1>
+		<h3 data-ng-bind="audiodoc.content"></h3>
 	</div>
 	<div class="pull-right" data-ng-show="authentication.user._id == audiodoc.user._id">
 		<a class="btn btn-primary" href="/#!/audiodocs/{{audiodoc._id}}/edit">

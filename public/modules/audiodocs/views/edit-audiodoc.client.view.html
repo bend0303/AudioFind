@@ -6,9 +6,13 @@
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="subject">Subject</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="audiodoc.name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" data-ng-model="subject" id="subject" class="form-control" placeholder="Name" required>
+                    </div>
+                    <label class="control-label" for="content">Content</label>
+                    <div class="controls">
+                        <textarea data-ng-model="content" id="content" class="form-control" placeholder="Name" required></textarea>
                     </div>
                 </div>
                 <div class="form-group">

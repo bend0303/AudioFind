@@ -9,7 +9,8 @@ angular.module('audiodocs').controller('AudiodocsController', ['$scope', '$state
 		$scope.create = function() {
 			// Create new Audiodoc object
 			var audiodoc = new Audiodocs ({
-				name: this.name
+				subject: this.subject,
+                content: this.content
 			});
 
 			// Redirect after save

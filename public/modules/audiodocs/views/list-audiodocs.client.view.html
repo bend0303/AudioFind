@@ -10,7 +10,9 @@
 				by
 				<span data-ng-bind="audiodoc.user.displayName"></span>
 			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="audiodoc.name"></h4>
+			<h4 class="list-group-item-heading" data-ng-bind="audiodoc.subject"></h4>
+			<h3 class="list-group-item-heading" data-ng-bind="audiodoc.content"></h3>
+
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!audiodocs.$resolved || audiodocs.length">
