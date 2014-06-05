@@ -3,7 +3,7 @@
 angular.module('audiosearch').filter('highlight', function($sce) {
     return function (text, phrase) {
         if (phrase) {
-            var phrases = phrase.split(" ");
+            var phrases = phrase.split(' ');
             console.log(phrases);
             for (var i =0; i <= phrases.length;i++) {
                 console.log(phrases[i]);
