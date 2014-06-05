@@ -1,3 +1,28 @@
 <section data-ng-controller="MainsearchController">
-	This is the Mainsearch view
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <img src="/modules/audiosearch/img/audiofindlogo.png" style="width: 300px;" alt="AudioFind"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control">
+              <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+              </button>
+             </span>
+                </div>
+            </div>
+        </div>
+        <button ng-click="findDoc()">find</button>
+    </div>
+
+    <div ng-repeat="doc in audiodocs">
+        <h3>{{doc.subject}}</h3> <span>{{doc.created}}</span>
+        <h4>{{doc.content}}</h4>
+
+    </div>
 </section>
