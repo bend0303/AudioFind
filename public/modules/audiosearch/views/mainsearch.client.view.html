@@ -22,6 +22,6 @@
     </div>
     <div ng-repeat="doc in docresults">
         <h3>{{doc.subject}}</h3> <span>{{doc.created}}</span>
-        <h4>{{doc.content}}</h4>
+        <div ng-bind-html="doc.content | highlight:query"><div>
     </div>
 </section>

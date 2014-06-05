@@ -4,7 +4,9 @@ angular.module('audiosearch').controller('MainsearchController',
 	function($scope, $http) {
         $scope.docresults = {};
         $scope.query = '';
-
+        $scope.$watch('query', function() {
+            $scope.docresults = {};
+        });
         $scope.findDoc = function() {
             var responsePromise = $http.get('/audiodocs/search/' + $scope.query);
 
