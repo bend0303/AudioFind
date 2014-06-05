@@ -11,11 +11,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		state('home', {
             url: '/',
 			templateUrl: 'modules/audiosearch/views/mainsearch.client.view.html'
-		});
-//        .
-//        state('land', {
-//                url: '/land',
-//                templateUrl: 'modules/core/views/home.client.view.html'
-//            });
+		})
+        .state('login', {
+                url: '/login',
+                templateUrl: 'modules/core/views/home.client.view.html'
+            });
 	}
 ]);

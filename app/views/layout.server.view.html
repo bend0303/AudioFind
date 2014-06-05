@@ -42,9 +42,13 @@
 	<![endif]-->
 </head>
 
-<body class="ng-cloak">
-	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-	<section class="content">
+<body ng-controller="MainController" ng-class="{land: is('login')}" class="ng-cloak">
+    <ng-switch on="is('login')">
+        <div ng-switch-when="false">
+            <header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
+        </div>
+    </ng-switch>
+    <section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
@@ -59,11 +63,6 @@
 	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>
 	{% endfor %} 
 
-	{% if process.env.NODE_ENV === 'development' %}
-	<!--Livereload script rendered -->
-	<script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
-
-	{% endif %}
 </body>
 
 </html>
