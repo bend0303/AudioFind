@@ -1,13 +1,20 @@
 'use strict';
 
-angular.module('audiosearch').controller('MainsearchController', ['$scope', 'Audiodocs',
-	function($scope, Audiodocs) {
+angular.module('audiosearch').controller('MainsearchController',
+	function($scope, $http) {
         $scope.docresults = {};
+        $scope.query = '';
 
-        // Find a list of Audiodocs
         $scope.findDoc = function() {
-            $scope.audiodocs = Audiodocs.query();
+            var responsePromise = $http.get('/audiodocs/search/' + $scope.query);
+
+            responsePromise.success(function(data, status, headers, config) {
+                $scope.docresults = _.pluck(data, 'obj');
+            });
+            responsePromise.error(function(data, status, headers, config) {
+
+            });
         };
 
     }
-]);
+);

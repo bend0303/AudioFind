@@ -4,30 +4,34 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    textSearch = require('mongoose-text-search');
 
 /**
  * Audiodoc Schema
  */
 var AudiodocSchema = new Schema({
-	subject: {
-		type: String,
-		default: '',
-		required: 'Please fill Audiodoc name',
-		trim: true
-	},
-    content: {
-      type: String,
-      default: ''
+    subject: {
+        type: String,
+        default: '',
+        required: 'Please fill Audiodoc name',
+        trim: true
     },
-	created: {
-		type: Date,
-		default: Date.now
-	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	}
+    content: {
+        type: String,
+        default: '',
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    }
 });
+AudiodocSchema.index({ content: 'text' });
+AudiodocSchema.plugin(textSearch);
 
-mongoose.model('Audiodoc', AudiodocSchema);
+
+var AudiodocModel = mongoose.model('Audiodoc', AudiodocSchema);
