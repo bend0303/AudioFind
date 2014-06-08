@@ -20,8 +20,8 @@
             </form>
         </div>
     </div>
-    <div ng-repeat="doc in docresults">
-        <h3>{{doc.subject}}</h3> <span>{{doc.created}}</span>
+    <div class="searchResultContainer" ng-repeat="doc in docresults">
+        <a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
         <div ng-bind-html="doc.content | highlight:query"><div>
     </div>
 </section>

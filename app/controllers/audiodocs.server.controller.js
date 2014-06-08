@@ -108,6 +108,7 @@ exports.list = function (req, res) {
 };
 
 exports.audiodocFTSearch = function (req, res) {
+    console.log(req);
     if (!req.param('query'))
         return res.send(400, {
             message: 'Empty query'
@@ -118,6 +119,7 @@ exports.audiodocFTSearch = function (req, res) {
                 message: getErrorMessage(err)
             });
         } else {
+            //use lodash to filter for the user relevent only
             res.jsonp(audiodocs.results);
         }
 
