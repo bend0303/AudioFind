@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
     Audiodoc = mongoose.model('Audiodoc'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    S = require('string');
+
 
 /**
  * Get the error message from error object
@@ -108,7 +110,6 @@ exports.list = function (req, res) {
 };
 
 exports.audiodocFTSearch = function (req, res) {
-    console.log(req);
     if (!req.param('query'))
         return res.send(400, {
             message: 'Empty query'
@@ -120,7 +121,12 @@ exports.audiodocFTSearch = function (req, res) {
             });
         } else {
             //use lodash to filter for the user relevent only
-            res.jsonp(audiodocs.results);
+            var results =_.pluck(audiodocs.results, 'obj');
+            _.each(results, function (value, key, list) {
+                value.content =  S(value.content).truncate(580);
+            });
+
+            res.jsonp(results);
         }
 
     });

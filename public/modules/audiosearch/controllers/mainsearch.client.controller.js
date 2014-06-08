@@ -9,14 +9,13 @@ angular.module('audiosearch').controller('MainsearchController',
         });
         $scope.findDoc = function() {
             var responsePromise = $http.get('/audiodocs/search/' + $scope.query);
-
             responsePromise.success(function(data, status, headers, config) {
-                $scope.docresults = _.pluck(data, 'obj');
+                $scope.docresults = data;
+
             });
             responsePromise.error(function(data, status, headers, config) {
-
             });
         };
-
+        myfunc();
     }
 );
