@@ -18,6 +18,7 @@ module.exports = {
 				'public/lib/animate.css/animate.min.css'
 			],
 			js: [
+                'public/lib/audio5js/audio5.js',
                 'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 

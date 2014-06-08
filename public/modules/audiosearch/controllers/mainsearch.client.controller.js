@@ -1,9 +1,14 @@
 'use strict';
 
-angular.module('audiosearch').controller('MainsearchController',
-	function($scope, $http) {
+angular.module('audiosearch').controller('MainsearchController', ['$scope', '$http', 'AudioService',
+	function($scope, $http, AudioService) {
         $scope.docresults = {};
         $scope.query = '';
+        $scope.player = AudioService;
+        $scope.player.load('/uploads/test.mp3');
+        $scope.player.on('timeupdate',function(){
+            $scope.$apply();
+        })
         $scope.$watch('query', function() {
             $scope.docresults = {};
         });
@@ -16,6 +21,5 @@ angular.module('audiosearch').controller('MainsearchController',
             responsePromise.error(function(data, status, headers, config) {
             });
         };
-        myfunc();
-    }
+    }]
 );
