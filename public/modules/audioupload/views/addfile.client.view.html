@@ -1,8 +1,25 @@
-
 <div ng-controller="UploadController">
-	This is the Addfile
-    <input type="file" ng-file-select="onFileSelect($files)" >
+    <h1>
+        Upload File
+    </h1>Please fill form in order to upload your audio file<br>
+    <br>
+    <form ng-upload="uploadComplete(content)" ng-upload-loading="startUploading()" action="/server/upload/url">
+        <p>
+            <label>Subject:</label> <input type="text" name="subject" ng-model="subject">
+        </p>
+        <p>
+            <label>Your Audio file:</label> <input type="file" name="file">
+        </p>
+        <p>
+            <input type="submit" class="btn" value="Submit" ng-disabled="$isUploading">
+        </p>
+    </form>
+    <br>
 
+    <img ng-show="loading" ng-src="/modules/audioupload/img/uploading.gif" style="width: 100px; height: 100px;" />
 
+    <div>
+        {{uploadResponse}}<br>
+    </div>
 
 </div>

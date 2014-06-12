@@ -12,7 +12,7 @@ module.exports = function(app) {
 		.post(audiodocs.create);
 
     app.route('/server/upload/url')
-		.post(audiodocs.uploadPhoto);
+		.post(audiodocs.uploadFile);
 
 	app.route('/audiodocs/:audiodocId')
 		.get(audiodocs.read)

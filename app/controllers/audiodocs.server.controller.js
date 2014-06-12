@@ -7,12 +7,13 @@ var mongoose = require('mongoose'),
     Audiodoc = mongoose.model('Audiodoc'),
     _ = require('lodash'),
     express = require('express'),
-    http = require('http'),
     needle = require('needle'),
-    fs = require('fs');
+    fs = require('fs'),
+    multer  = require('multer'),
     S = require('string');
 
-
+var app = express();
+app.use(multer({ dest: './uploads/'}));
 /**
  * Get the error message from error object
  */
@@ -130,7 +131,6 @@ exports.audiodocFTSearch = function (req, res) {
                 value.content =  S(value.content).truncate(580);
             });
 
-            res.jsonp(results);
         }
 
     });
@@ -159,20 +159,12 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
-exports.uploadPhoto = app.use(function(req, res) {
-    console.log('inside uploadPhoto'); // <-- never reached using IE9
+exports.uploadFile = app.use(function(req, res, next) {
+    res._headers['x-frame-options'] = 'SAMEORIGIN';
+    console.log('inside uploadFile'); // <-- never reached using IE9
+    var files = req.files;
 
-    //fs.createReadStream('eat.flac').pipe(request.post('http://www.google.com/speech-api/v2/recognize?output=json&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY'));
-//    fs.createReadStream('eat.flac').pipe(request.post('http://www.google.com/speech-api/v2/recognize?output=json&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY',
-//        function optionalCallback (err, httpResponse, body) {
-//        if (err) {
-//            return console.error('upload failed:', err);
-//        }
-//        console.log('Upload successful!  Server responded with:', httpResponse);
-//        console.log('Upload successful!  Server responded with:', body);
-//    }));
-    needle.defaults({'content-type' :'audio/x-flac; rate=44100'});
-    var file = fs.createReadStream('eat.flac');
+    var file = fs.createReadStream(files.file.path);
 
     var options = {
         headers: {
@@ -180,13 +172,30 @@ exports.uploadPhoto = app.use(function(req, res) {
         }
     }
 
-
-    needle.post('http://www.google.com/speech-api/v2/recognize?output=json&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY',
-        file,options,
-        function(err, resp, body) {
-            if (err)
-            {
+    needle.post('http://www.google.com/speech-api/v2/recognize?output=json&maxresults=1&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY',
+        file, options,
+        function (err, resp) {
+            if (err) {
                 console.log('error');
             }
-        console.log(resp,body);
-    });
+
+            var parsedResult =JSON.parse(resp.body.substring(14));
+
+            var jsonDoc = req.body;
+            jsonDoc.content = parsedResult.result[0]['alternative'][0]['transcript'];
+
+            var audiodoc = new Audiodoc(jsonDoc);
+            audiodoc.user = req.user;
+            audiodoc.save(function (err) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    res.jsonp(req.files.file);
+                }
+            });
+
+        });
+
+})
