@@ -1,4 +1,6 @@
 'use strict';
+var express = require('express'),
+    app = express();
 
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
@@ -7,7 +9,10 @@ module.exports = function(app) {
 	// Audiodocs Routes
 	app.route('/audiodocs')
 		.get(audiodocs.list)
-		.post(users.requiresLogin, audiodocs.create);
+		.post(audiodocs.create);
+
+    app.route('/server/upload/url')
+		.post(audiodocs.uploadPhoto);
 
 	app.route('/audiodocs/:audiodocId')
 		.get(audiodocs.read)
@@ -20,3 +25,5 @@ module.exports = function(app) {
 	// Finish by binding the Audiodoc middleware
 	app.param('audiodocId', audiodocs.audiodocByID);
 };
+
+

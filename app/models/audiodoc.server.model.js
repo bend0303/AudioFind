@@ -19,7 +19,7 @@ var AudiodocSchema = new Schema({
     },
     content: {
         type: String,
-        default: '',
+        default: ''
     },
     created: {
         type: Date,
