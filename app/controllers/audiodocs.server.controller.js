@@ -8,26 +8,11 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     express = require('express'),
     http = require('http'),
-    request = require('request'),
     needle = require('needle'),
-   // multipart = require('connect-multiparty'),
-    //urlen = require('urlencode'),
-    //bodyParser = require('body-parser'),
-    //anyBody = require("body/any");
-    //multer = require('multer');
-  //  connect = require('connect');
-    //busboy = require('connect-busboy');
     fs = require('fs');
+    S = require('string');
 
-var app = express();
-//app.use(connect.urlencoded());
-//app.use(anyBody);
-//app.use(express.methodOverride());
-//app.use(express.multipart());
-//var multipartMiddleware = multipart();
-//app.use(busboy());
-//app.use(multer({ dest: './uploads/'}));
-//app.use(bodyParser());
+
 /**
  * Get the error message from error object
  */
@@ -139,7 +124,13 @@ exports.audiodocFTSearch = function (req, res) {
                 message: getErrorMessage(err)
             });
         } else {
-            res.jsonp(audiodocs.results);
+            //use lodash to filter for the user relevent only
+            var results =_.pluck(audiodocs.results, 'obj');
+            _.each(results, function (value, key, list) {
+                value.content =  S(value.content).truncate(580);
+            });
+
+            res.jsonp(results);
         }
 
     });
@@ -157,8 +148,6 @@ exports.audiodocByID = function (req, res, next, id) {
         next();
     });
 };
-
-
 
 /**
  * Audiodoc authorization middleware
@@ -201,34 +190,3 @@ exports.uploadPhoto = app.use(function(req, res) {
             }
         console.log(resp,body);
     });
-
-
-
-//    var options = {
-//        url: 'http://www.google.com/speech-api/v2/recognize?output=json&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY',
-//        method: "Post",
-//        headers: {
-//            'Content-Type': 'audio/x-flac; rate=44100'
-//        }
-//    };
-//
-//    function callback(error, response, body) {
-//        if (error)
-//        {
-//            console.log('error');
-//        }
-//        if (!error && response.statusCode == 200) {
-//            var info = JSON.parse(body);
-//            console.log(info.stargazers_count + " Stars");
-//            console.log(info.forks_count + " Forks");
-//        }
-//    }
-//
-//    request(options, callback);
-
-    //console.log(req);
-    //console.log(req);
-    //console.log(req.body);
-    //console.log(req.files);
-    //console.log(req.file);
-});

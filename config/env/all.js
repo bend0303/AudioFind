@@ -15,9 +15,11 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-				'public/lib/animate.css/animate.min.css',
+				'public/lib/animate.css/animate.min.css'
 			],
 			js: [
+                'public/lib/audio5js/audio5.js',
+                'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
