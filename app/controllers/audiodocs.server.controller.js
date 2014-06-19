@@ -9,11 +9,9 @@ var mongoose = require('mongoose'),
     express = require('express'),
     needle = require('needle'),
     fs = require('fs'),
-    multer  = require('multer'),
     S = require('string');
 
 var app = express();
-app.use(multer({ dest: './uploads/'}));
 /**
  * Get the error message from error object
  */
@@ -127,9 +125,9 @@ exports.audiodocFTSearch = function (req, res) {
             });
         } else {
             //use lodash to filter for the user relevent only
-            var results =_.pluck(audiodocs.results, 'obj');
+            var results = _.pluck(audiodocs.results, 'obj');
             _.each(results, function (value, key, list) {
-                value.content =  S(value.content).truncate(580);
+                value.content = S(value.content).truncate(580);
             });
             res.jsonp(results);
         }
@@ -160,9 +158,10 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
-exports.uploadFile = function(req, res, next) {
+exports.uploadFile = function (req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
     console.log('inside uploadFile'); // <-- never reached using IE9
+
     var files = req.files;
 
     var file = fs.createReadStream(files.file.path);
