@@ -119,6 +119,7 @@ exports.audiodocFTSearch = function (req, res) {
         return res.send(400, {
             message: 'Empty query'
         });
+
     Audiodoc.textSearch(req.param('query'), function (err, audiodocs) {
         if (err) {
             return res.send(400, {
@@ -130,7 +131,7 @@ exports.audiodocFTSearch = function (req, res) {
             _.each(results, function (value, key, list) {
                 value.content =  S(value.content).truncate(580);
             });
-
+            res.jsonp(results);
         }
 
     });
@@ -159,7 +160,7 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
-exports.uploadFile = app.use(function(req, res, next) {
+exports.uploadFile = function(req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
     console.log('inside uploadFile'); // <-- never reached using IE9
     var files = req.files;
@@ -198,4 +199,4 @@ exports.uploadFile = app.use(function(req, res, next) {
 
         });
 
-})
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('audiosearch',['ngUpload']).controller('UploadController', function($scope) {
+angular.module('audiosearch').controller('UploadController', function($scope) {
 
     $scope.startUploading = function() {
         console.log('uploading....')
