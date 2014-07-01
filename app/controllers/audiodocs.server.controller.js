@@ -117,7 +117,6 @@ exports.audiodocFTSearch = function (req, res) {
         return res.send(400, {
             message: 'Empty query'
         });
-
     Audiodoc.textSearch(req.param('query'), function (err, audiodocs) {
         if (err) {
             return res.send(400, {
@@ -126,9 +125,11 @@ exports.audiodocFTSearch = function (req, res) {
         } else {
             //use lodash to filter for the user relevent only
             var results = _.pluck(audiodocs.results, 'obj');
+            var retval;
             _.each(results, function (value, key, list) {
                 value.content = S(value.content).truncate(580);
             });
+
             res.jsonp(results);
         }
 
@@ -139,6 +140,7 @@ exports.audiodocFTSearch = function (req, res) {
 /**
  * Audiodoc middleware
  */
+
 exports.audiodocByID = function (req, res, next, id) {
     Audiodoc.findById(id).populate('user', 'displayName').exec(function (err, audiodoc) {
         if (err) return next(err);
@@ -157,6 +159,39 @@ exports.hasAuthorization = function (req, res, next) {
     }
     next();
 };
+
+exports.sharedoc = function (req, res, next) {
+    var sharedWithUser = req.body.sharedWithUser;
+    var sharedDoc = req.body.sharedDoc;
+    Audiodoc.findById(sharedDoc._id).exec(function (err, audiodoc) {
+        if (err) {
+            res.send(400, {
+                message: getErrorMessage(err)
+            });
+        }
+
+        if (!audiodoc) {
+            res.send(400, {
+                message: getErrorMessage('no doc found')
+            });
+        }
+
+        audiodoc.sharedUser.push(sharedWithUser.id);
+        audiodoc.sharedUser = _.uniq(audiodoc.sharedUser);
+        audiodoc.save(function (err) {
+            if (err) {
+                return res.send(400, {
+                    message: getErrorMessage(err)
+                });
+            } else {
+                res.jsonp("success");
+            }
+        });
+
+    });
+
+
+}
 
 exports.uploadFile = function (req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
@@ -177,9 +212,10 @@ exports.uploadFile = function (req, res, next) {
         function (err, resp) {
             if (err) {
                 console.log('error');
+                res.jsonp("error");
             }
 
-            var parsedResult =JSON.parse(resp.body.substring(14));
+            var parsedResult = JSON.parse(resp.body.substring(14));
 
             var jsonDoc = req.body;
             jsonDoc.content = parsedResult.result[0]['alternative'][0]['transcript'];

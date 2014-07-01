@@ -20,25 +20,59 @@
             </form>
         </div>
     </div>
+	<tabset class="ui-tab" style="margin-top: 10px">
+		<tab heading="Search Results">
+			<div class="searchResultContainer" ng-repeat="doc in docresults">
+				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
+
+				<div ng-bind-html="doc.content | highlight:query">
+
+				</div>
+				<div>
+					<ol class="breadcrumb">
+						<li><a href="#">Download as MP3</a></li>
+						<li><a href="#">View Document</a></li>
+						<li>
+							<button ng-click="player.playPause()">Play/Pause</button>
+							<span>Position {{player.position}}</span>
+							<span>Duration {{player.duration}}</span>
+
+						</li>
+						<li>
+							<input type="text"
+							       ng-model="selectedUser"
+							       typeahead="stuff as stuff.name for stuff in usersemil | filter:$viewValue | limitTo:8"
+							       typeahead-on-select="shareWithUser($item,this)"
+							       class="form-control"
+							       placeholder="Search">
+						</li>
+					</ol>
+				</div>
+			</div>
+		</tab>
+		<tab heading="Shared Docsuments">
+			<div class="searchResultContainer" ng-repeat="doc in docresults">
+				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
+
+				<div ng-bind-html="doc.content | highlight:query">
+
+				</div>
+				<div>
+					<ol class="breadcrumb">
+						<li><a href="#">Download as MP3</a></li>
+						<li><a href="#">View Document</a></li>
+						<li>
+							<button ng-click="player.playPause()">Play/Pause</button>
+							<span>Position {{player.position}}</span>
+							<span>Duration {{player.duration}}</span>
+
+						</li>
+					</ol>
+				</div>
+			</div>
+		</tab>
+	</tabset>
 
 
-    <div class="searchResultContainer" ng-repeat="doc in docresults">
-        <a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
 
-        <div ng-bind-html="doc.content | highlight:query">
-
-        </div>
-        <div>
-            <ol class="breadcrumb">
-                <li><a href="#">Download as MP3</a></li>
-                <li><a href="#">View Document</a></li>
-                <li>
-                    <button ng-click="player.playPause()">Play/Pause</button>
-                    <span>Position {{player.position}}</span>
-                    <span>Duration {{player.duration}}</span>
-
-                </li>
-            </ol>
-        </div>
-    </div>
 </section>

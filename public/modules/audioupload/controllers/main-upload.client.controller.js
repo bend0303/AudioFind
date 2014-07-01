@@ -4,7 +4,7 @@
 angular.module('audiosearch').controller('UploadController', function($scope) {
 
     $scope.startUploading = function() {
-        console.log('uploading....')
+        console.log('uploading....');
         $scope.loading = true;
     };
     $scope.uploadComplete = function (content) {
@@ -18,5 +18,5 @@ angular.module('audiosearch').controller('UploadController', function($scope) {
         $scope.gender = '';
         $scope.color = '';
         // Look for way to clear the input[type=file] element
-    }
+    };
 });

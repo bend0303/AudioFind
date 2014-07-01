@@ -82,7 +82,7 @@ module.exports = function (db) {
     app.use(multer(
         {    dest: './uploads/',
             onParseStart: function () {
-                console.log('Form parsing completed at: ', new Date())
+                console.log('Form parsing completed at: ', new Date());
             }
         }));
     // Enable jsonp

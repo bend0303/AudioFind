@@ -21,7 +21,9 @@
         "_": true,
         "jasmine": true,
 		"angular": true,
-		"ApplicationConfiguration": true
+		"ApplicationConfiguration": true,
+        "Audio5js": true,
+        "toastr": true
 	},
 	"predef": [ // Extra globals.
 		"define",
