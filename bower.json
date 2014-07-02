@@ -16,6 +16,7 @@
     "angular-ui-router": "~0.2.10",
     "animate.css": "latest",
     "underscore": "latest",
-    "toastr": "~2.0.3"
+    "toastr": "~2.0.3",
+    "bootstrap-file-input": "~1.0.0"
   }
 }

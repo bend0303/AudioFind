@@ -20,3 +20,13 @@ angular.module('audioupload').directive('uploadFile', ['$parse',
 		};
 	}
 ]);
+
+angular.module('audioupload').directive('uiFileUpload', [
+    function () {
+        return {
+            restrict: 'A',
+            link: function (scope, ele) {
+                return ele.bootstrapFileInput();
+            }
+        };
+    }]);

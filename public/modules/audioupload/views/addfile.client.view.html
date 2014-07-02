@@ -1,25 +1,34 @@
 <div ng-controller="UploadController">
-    <h1>
-        Upload File
-    </h1>Please fill form in order to upload your audio file<br>
-    <br>
-    <form ng-upload="uploadComplete(content)" ng-upload-loading="startUploading()" action="/server/upload/url">
-        <p>
-            <label>Subject:</label> <input type="text" name="subject" ng-model="subject">
-        </p>
-        <p>
-            <label>Your Audio file:</label> <input type="file" name="file">
-        </p>
-        <p>
-            <input type="submit" class="btn" value="Submit" ng-disabled="$isUploading">
-        </p>
-    </form>
-    <br>
+	<h2>Upload File
+		<small>Please fill form in order to upload your audio file</small>
+	</h2>
+	<section class="panel panel-default">
+		<div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> File Uploader</strong></div>
+		<div class="panel-body">
+			<form role="form" ng-upload="uploadComplete(content)" ng-upload-loading="startUploading()" action="/server/upload/url">
+				<div class="form-group">
+					<label for="subject">Subject</label>
+					<input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" ng-model="subject">
+				</div>
+				<div class="form-group">
+					<label for="file">Your Audio file:</label>
+					<input class="btn-success" ui-file-upload type="file" name="file" id="file">
+					<img ng-show="loading" ng-src="/modules/audioupload/img/uploading.gif" style="width: 50px;"/>
 
-    <img ng-show="loading" ng-src="/modules/audioupload/img/uploading.gif" style="width: 100px; height: 100px;" />
+				</div>
+				<input style="float: right" type="submit" class="btn btn-primary" value="Submit" ng-disabled="$isUploading">
+			</form>
+		</div>
+	</section>
 
-    <div>
-        {{uploadResponse}}<br>
-    </div>
+
+	<section ng-show="hasResults" class="panel panel-default">
+		<div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> File Uploader</strong></div>
+
+		{{uploadResponse}}
+
+	</section>
+
+
 
 </div>

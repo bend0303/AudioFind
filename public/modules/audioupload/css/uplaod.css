@@ -1,0 +1,14 @@
+.btn-success {
+    color: #ffffff;
+    background-color: #60cd9b;
+    border-color: #4dc78f;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.open .dropdown-toggle .btn-success {
+    color: #ffffff;
+    background-color: #41c387;
+    border-color: #33a370;
+}

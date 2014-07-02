@@ -3,13 +3,14 @@
 
 angular.module('audiosearch').controller('UploadController', function($scope) {
 
+    $scope.hasResults = false;
     $scope.startUploading = function() {
         console.log('uploading....');
         $scope.loading = true;
     };
     $scope.uploadComplete = function (content) {
         console.log('upload complete');
-
+        $scope.hasResults = true;
         $scope.uploadResponse = 'File:' + content.originalname + ' Has been uploaded'; // Presumed content is a json string!
         $scope.loading = false;
 
