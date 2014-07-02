@@ -1,28 +1,28 @@
 <section data-ng-controller="MainsearchController">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <img src="/modules/audiosearch/img/audiofindlogo.png" style="width: 300px;" alt="AudioFind"/>
-            </div>
-        </div>
-        <div class="row">
-            <form ng-submit="findDoc()">
-                <div class="col-lg-12">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" ng-model="query">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<img src="/modules/audiosearch/img/audiofindlogo.png" style="width: 300px;" alt="AudioFind"/>
+			</div>
+		</div>
+		<div class="row">
+			<form ng-submit="findDoc()">
+				<div class="col-lg-12">
+					<div class="input-group custom-search-form">
+						<input type="text" class="form-control" ng-model="query">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button" ng-click="findDoc()">
-                  <span class="glyphicon glyphicon-search"></span>
+	              <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-	<tabset class="ui-tab" style="margin-top: 10px">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<tabset ng-show="hasResults" class="ui-tab" style="margin-top: 10px">
 		<tab heading="Search Results">
-			<div class="searchResultContainer" ng-repeat="doc in docresults">
+			<div class="searchResultContainer" ng-repeat="doc in owndocs">
 				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
 
 				<div ng-bind-html="doc.content | highlight:query">
@@ -31,13 +31,16 @@
 				<div>
 					<ol class="breadcrumb">
 						<li><a href="#">Download as MP3</a></li>
+						<span class="breaker">/</span>
 						<li><a href="#">View Document</a></li>
+						<span class="breaker">/</span>
 						<li>
 							<button ng-click="player.playPause()">Play/Pause</button>
 							<span>Position {{player.position}}</span>
 							<span>Duration {{player.duration}}</span>
 
 						</li>
+						<span class="breaker">/</span>
 						<li>
 							<input type="text"
 							       ng-model="selectedUser"
@@ -51,7 +54,7 @@
 			</div>
 		</tab>
 		<tab heading="Shared Docsuments">
-			<div class="searchResultContainer" ng-repeat="doc in docresults">
+			<div class="searchResultContainer" ng-repeat="doc in sharedocs">
 				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
 
 				<div ng-bind-html="doc.content | highlight:query">
@@ -60,7 +63,11 @@
 				<div>
 					<ol class="breadcrumb">
 						<li><a href="#">Download as MP3</a></li>
+						<span class="breaker">/</span>
+
 						<li><a href="#">View Document</a></li>
+						<span class="breaker">/</span>
+
 						<li>
 							<button ng-click="player.playPause()">Play/Pause</button>
 							<span>Position {{player.position}}</span>
@@ -72,7 +79,6 @@
 			</div>
 		</tab>
 	</tabset>
-
 
 
 </section>

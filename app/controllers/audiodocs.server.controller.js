@@ -125,12 +125,21 @@ exports.audiodocFTSearch = function (req, res) {
         } else {
             //use lodash to filter for the user relevent only
             var results = _.pluck(audiodocs.results, 'obj');
-            var retval;
+            var retval = {
+                owned: [],
+                shared: []
+            };
             _.each(results, function (value, key, list) {
                 value.content = S(value.content).truncate(580);
             });
-
-            res.jsonp(results);
+            for (var i = 0; i<results.length; i++) {
+                if (String(results[i].user) === String(req.user._id)) {
+                    retval.owned.push(results[i]);
+                } else if (results[i].sharedUser.indexOf(String(req.user._id)) > -1) {
+                    retval.shared.push(results[i]);
+                }
+            }
+            res.jsonp(retval);
         }
 
     });
