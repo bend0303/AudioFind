@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    db: 'mongodb://localhost/audiofind-dev',
+    db: 'mongodb://dbuser:dbpass@ds051459.mongolab.com:51459/audiofind',
     app: {
         title: 'AudioFind - Development Environment'
     },

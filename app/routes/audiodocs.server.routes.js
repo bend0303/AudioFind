@@ -22,8 +22,13 @@ module.exports = function(app) {
     app.route('/audiodocs/search/:query')
         .get(users.requiresLogin, audiodocs.audiodocFTSearch);
 
+    app.route('/getusers')
+        .get(users.users);
+
 	// Finish by binding the Audiodoc middleware
 	app.param('audiodocId', audiodocs.audiodocByID);
+
+    app.route('/sharedoc').post(audiodocs.sharedoc)
 };
 
 

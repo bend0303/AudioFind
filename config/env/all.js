@@ -15,13 +15,15 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-				'public/lib/animate.css/animate.min.css'
+				'public/lib/animate.css/animate.min.css',
+				'public/lib/toastr/toastr.css'
 			],
 			js: [
                 'public/lib/audio5js/audio5.js',
                 'public/lib/jquery/dist/jquery.min.js',
-				'public/lib/angular/angular.js',
-				'public/lib/angular-resource/angular-resource.js', 
+                'public/lib/toastr/toastr.js',
+                'public/lib/angular/angular.js',
+				'public/lib/angular-resource/angular-resource.js',
 				'public/lib/angular-cookies/angular-cookies.js', 
 				'public/lib/angular-animate/angular-animate.js', 
 				'public/lib/angular-touch/angular-touch.js', 
@@ -29,6 +31,7 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+				'public/lib/bootstrap-file-input/bootstrap.file-input.js',
                 'public/lib/underscore/underscore.js',
                 'public/lib/ngUpload/ng-upload.js'
 			]

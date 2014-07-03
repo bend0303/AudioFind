@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('audiosearch',['ngUpload']).controller('UploadController', function($scope) {
+angular.module('audioupload').controller('UploadController', function($scope) {
 
     angular.element(document).ready(function () {
         navigator.webkitGetUserMedia({audio:true}, callback, errorCallback);
@@ -16,15 +16,15 @@ angular.module('audiosearch',['ngUpload']).controller('UploadController', functi
     function errorCallback(err) {
 
     }
-
+    $scope.hasResults = false;
     $scope.startUploading = function() {
-        console.log('uploading....')
+        console.log('uploading....');
         $scope.loading = true;
     };
     $scope.uploadComplete = function (content) {
         console.log('upload complete');
-
-        $scope.uploadResponse = 'File:' + content + ' Has been uploaded'; // Presumed content is a json string!
+        $scope.hasResults = true;
+        $scope.uploadResponse = 'File:' + content.originalname + ' Has been uploaded'; // Presumed content is a json string!
         $scope.loading = false;
 
         // Clear form (reason for using the 'ng-model' directive on the input elements)
@@ -32,5 +32,5 @@ angular.module('audiosearch',['ngUpload']).controller('UploadController', functi
         $scope.gender = '';
         $scope.color = '';
         // Look for way to clear the input[type=file] element
-    }
+    };
 });

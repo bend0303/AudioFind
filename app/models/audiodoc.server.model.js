@@ -28,6 +28,9 @@ var AudiodocSchema = new Schema({
     user: {
         type: Schema.ObjectId,
         ref: 'User'
+    },
+    sharedUser: {
+        type: [String]
     }
 });
 AudiodocSchema.index({ content: 'text' });

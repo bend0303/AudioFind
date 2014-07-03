@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
      mv = require('mv');
 
 var app = express();
-app.use(multer({ dest: './uploads/'}));
 /**
  * Get the error message from error object
  */
@@ -116,22 +115,38 @@ exports.list = function (req, res) {
 };
 
 exports.audiodocFTSearch = function (req, res) {
-    if (!req.param('query'))
+    if (!req.param('query')) {
+
         return res.send(400, {
+
+
             message: 'Empty query'
         });
+    }
     Audiodoc.textSearch(req.param('query'), function (err, audiodocs) {
         if (err) {
+            console.log("I'm here" + err);
             return res.send(400, {
                 message: getErrorMessage(err)
             });
         } else {
             //use lodash to filter for the user relevent only
-            var results =_.pluck(audiodocs.results, 'obj');
+            var results = _.pluck(audiodocs.results, 'obj');
+            var retval = {
+                owned: [],
+                shared: []
+            };
             _.each(results, function (value, key, list) {
-                value.content =  S(value.content).truncate(580);
+                value.content = S(value.content).truncate(580);
             });
-
+            for (var i = 0; i<results.length; i++) {
+                if (String(results[i].user) === String(req.user._id)) {
+                    retval.owned.push(results[i]);
+                } else if (results[i].sharedUser.indexOf(String(req.user._id)) > -1) {
+                    retval.shared.push(results[i]);
+                }
+            }
+            res.jsonp(retval);
         }
 
     });
@@ -141,6 +156,7 @@ exports.audiodocFTSearch = function (req, res) {
 /**
  * Audiodoc middleware
  */
+
 exports.audiodocByID = function (req, res, next, id) {
     Audiodoc.findById(id).populate('user', 'displayName').exec(function (err, audiodoc) {
         if (err) return next(err);
@@ -160,10 +176,42 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
-exports.uploadFile = app.use(function(req, res, next) {
+exports.sharedoc = function (req, res, next) {
+    var sharedWithUser = req.body.sharedWithUser;
+    var sharedDoc = req.body.sharedDoc;
+    Audiodoc.findById(sharedDoc._id).exec(function (err, audiodoc) {
+        if (err) {
+            res.send(400, {
+                message: getErrorMessage(err)
+            });
+        }
+
+        if (!audiodoc) {
+            res.send(400, {
+                message: getErrorMessage('no doc found')
+            });
+        }
+
+        audiodoc.sharedUser.push(sharedWithUser.id);
+        audiodoc.sharedUser = _.uniq(audiodoc.sharedUser);
+        audiodoc.save(function (err) {
+            if (err) {
+                return res.send(400, {
+                    message: getErrorMessage(err)
+                });
+            } else {
+                res.jsonp("success");
+            }
+        });
+
+    });
+
+
+}
+
+exports.uploadFile = function (req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
     console.log('inside uploadFile'); // <-- never reached using IE9
-
     var originalName = req.files.file.originalname;
 
     var options = {
@@ -177,9 +225,10 @@ exports.uploadFile = app.use(function(req, res, next) {
         function (err, resp) {
             if (err) {
                 console.log('error');
+                res.jsonp("error");
             }
 
-            var parsedResult =JSON.parse(resp.body.substring(14));
+            var parsedResult = JSON.parse(resp.body.substring(14));
 
             var jsonDoc = req.body;
             jsonDoc.content = parsedResult.result[0]['alternative'][0]['transcript'];
@@ -199,4 +248,4 @@ exports.uploadFile = app.use(function(req, res, next) {
 
         });
 
-})
+}

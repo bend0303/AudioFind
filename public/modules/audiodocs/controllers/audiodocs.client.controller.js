@@ -5,6 +5,7 @@ angular.module('audiodocs').controller('AudiodocsController', ['$scope', '$state
 	function($scope, $stateParams, $location, Authentication, Audiodocs ) {
 		$scope.authentication = Authentication;
 
+
 		// Create new Audiodoc
 		$scope.create = function() {
 			// Create new Audiodoc object
