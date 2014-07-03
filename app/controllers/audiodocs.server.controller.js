@@ -10,7 +10,8 @@ var mongoose = require('mongoose'),
     needle = require('needle'),
     fs = require('fs'),
     multer  = require('multer'),
-    S = require('string');
+    S = require('string'),
+     mv = require('mv');
 
 var app = express();
 app.use(multer({ dest: './uploads/'}));
@@ -162,16 +163,15 @@ exports.hasAuthorization = function (req, res, next) {
 exports.uploadFile = app.use(function(req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
     console.log('inside uploadFile'); // <-- never reached using IE9
-    var files = req.files;
 
-    var file = fs.createReadStream(files.file.path);
+    var originalName = req.files.file.originalname;
 
     var options = {
         headers: {
             'Content-Type': 'audio/x-flac; rate=44100'
         }
     }
-
+    var file = fs.createReadStream(req.files.file.path);
     needle.post('http://www.google.com/speech-api/v2/recognize?output=json&maxresults=1&lang=en-us&key=AIzaSyD5rlPiYhD3p-0rRoUQ9QCleq-aN_ZlyGY',
         file, options,
         function (err, resp) {
@@ -191,10 +191,11 @@ exports.uploadFile = app.use(function(req, res, next) {
                     return res.send(400, {
                         message: getErrorMessage(err)
                     });
-                } else {
-                    res.jsonp(req.files.file);
                 }
             });
+            var newFilePath = 'uploads\\'+req.user._id+'\\'+originalName;
+            mv(req.files.file.path, newFilePath,{mkdirp: true}, function(err) {});
+            res.jsonp(originalName);
 
         });
 
