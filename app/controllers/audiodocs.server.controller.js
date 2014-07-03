@@ -113,12 +113,17 @@ exports.list = function (req, res) {
 };
 
 exports.audiodocFTSearch = function (req, res) {
-    if (!req.param('query'))
+    if (!req.param('query')) {
+
         return res.send(400, {
+
+
             message: 'Empty query'
         });
+    }
     Audiodoc.textSearch(req.param('query'), function (err, audiodocs) {
         if (err) {
+            console.log("I'm here" + err);
             return res.send(400, {
                 message: getErrorMessage(err)
             });
