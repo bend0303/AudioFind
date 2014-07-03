@@ -17,6 +17,7 @@
     "animate.css": "latest",
     "underscore": "latest",
     "toastr": "~2.0.3",
-    "bootstrap-file-input": "~1.0.0"
+    "bootstrap-file-input": "~1.0.0",
+    "ngUpload": "~0.5.11"
   }
 }
