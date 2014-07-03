@@ -6,5 +6,6 @@ angular.module('audioupload' ,['ngUpload']).run(['Menus',
 		// Set top bar menu items
 		Menus.addMenuItem('topbar', 'AudioFiles', 'audioupload', 'dropdown');
 		Menus.addSubMenuItem('topbar', 'audioupload', 'Add File', 'addfile');
+        Menus.addSubMenuItem('topbar', 'audioupload', 'Record File', 'recordfile');
 	}
 ]);

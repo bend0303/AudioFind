@@ -40,7 +40,8 @@
     "mongoose-text-search": "0.0.2",
     "string": "^1.8.1",
     "multer": "^0.1.0",
-    "needle": "^0.7.2"
+    "needle": "^0.7.2",
+    "mv": "^2.0.1"
   },
   "devDependencies": {
     "supertest": "~0.12.1",
