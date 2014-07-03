@@ -233,6 +233,11 @@ exports.uploadFile = function (req, res, next) {
             var jsonDoc = req.body;
             jsonDoc.content = parsedResult.result[0]['alternative'][0]['transcript'];
 
+
+            jsonDoc.filepath = newFilePath;
+            var newFilePath = 'uploads/'+req.user._id+'/'+originalName;
+            mv(req.files.file.path, newFilePath,{mkdirp: true}, function(err) {});
+            jsonDoc.filepath = newFilePath;
             var audiodoc = new Audiodoc(jsonDoc);
             audiodoc.user = req.user;
             audiodoc.save(function (err) {
@@ -242,8 +247,6 @@ exports.uploadFile = function (req, res, next) {
                     });
                 }
             });
-            var newFilePath = 'uploads\\'+req.user._id+'\\'+originalName;
-            mv(req.files.file.path, newFilePath,{mkdirp: true}, function(err) {});
             res.jsonp(originalName);
 
         });

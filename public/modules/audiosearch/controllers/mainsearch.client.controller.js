@@ -4,6 +4,9 @@ angular.module('audiosearch').controller('MainsearchController', ['$scope', '$ht
         function ($scope, $http, AudioService, logger) {
 
             $scope.hasResults = false;
+            $scope.hasOwnDocs = false;
+            $scope.hasShared = false;
+
             $http.get('/getusers').success(function (response) {
                 //If successful we assign the response to the global user model
                 $scope.usersemil = response;
@@ -42,14 +45,19 @@ angular.module('audiosearch').controller('MainsearchController', ['$scope', '$ht
 
             $scope.query = '';
             $scope.player = AudioService;
-            $scope.player.load('/uploads/test.mp3');
             $scope.player.on('timeupdate', function () {
                 $scope.$apply();
             });
+
+            $scope.loadAudio = function(path) {
+                $scope.player.load(path);
+            }
             $scope.$watch('query', function () {
                 $scope.owndocs = {};
                 $scope.sharedocs = {};
                 $scope.hasResults = false;
+                $scope.hasOwnDocs = false;
+                $scope.hasShared = false;
             });
             $scope.findDoc = function () {
                 if (!$scope.query) {
@@ -58,10 +66,13 @@ angular.module('audiosearch').controller('MainsearchController', ['$scope', '$ht
                 }
                 var responsePromise = $http.get('/audiodocs/search/' + $scope.query);
                 responsePromise.success(function (data, status, headers, config) {
-                    if (_.isEmpty(data.owned)) {
+                    if (_.isEmpty(data.owned) && _.isEmpty(data.shared)) {
                         $scope.notify('warning', "Can't find results for query: " + $scope.query);
                         return;
                     }
+
+                    $scope.hasOwnDocs = !_.isEmpty(data.owned);
+                    $scope.hasShared = !_.isEmpty(data.shared);
                     $scope.owndocs = data.owned;
                     $scope.sharedocs = data.shared;
                     $scope.hasResults = true;

@@ -21,39 +21,34 @@
 		</div>
 	</div>
 	<tabset ng-show="hasResults" class="ui-tab" style="margin-top: 10px">
-		<tab heading="Search Results">
+		<tab  heading="Search Results">
+            <h3 ng-show="!hasOwnDocs">No results but you might want to check your shared</h3>
 			<div class="searchResultContainer" ng-repeat="doc in owndocs">
-				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
+				<a style="font-size: 16px;" data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
 
 				<div ng-bind-html="doc.content | highlight:query">
 
 				</div>
 				<div>
 					<ol class="breadcrumb">
-						<li><a href="#">Download as MP3</a></li>
+						<li><a href="{{doc.filepath}}">Download File</a></li>
 						<span class="breaker">/</span>
-						<li><a href="#">View Document</a></li>
-						<span class="breaker">/</span>
-						<li>
-							<button ng-click="player.playPause()">Play/Pause</button>
-							<span>Position {{player.position}}</span>
-							<span>Duration {{player.duration}}</span>
-
-						</li>
+						<li><a data-ng-href="#!/audiodocs/{{doc._id}}">View Document</a></li>
 						<span class="breaker">/</span>
 						<li>
 							<input type="text"
 							       ng-model="selectedUser"
+                                   id="shareWith"
 							       typeahead="stuff as stuff.name for stuff in usersemil | filter:$viewValue | limitTo:8"
 							       typeahead-on-select="shareWithUser($item,this)"
 							       class="form-control"
-							       placeholder="Search">
+							       placeholder="Share with friend">
 						</li>
 					</ol>
 				</div>
 			</div>
 		</tab>
-		<tab heading="Shared Docsuments">
+		<tab ng-show="hasShared"  heading="Shared Docsuments">
 			<div class="searchResultContainer" ng-repeat="doc in sharedocs">
 				<a data-ng-href="#!/audiodocs/{{doc._id}}">{{doc.subject}}</a> <span class="time">{{doc.created}}</span>
 
@@ -62,10 +57,10 @@
 				</div>
 				<div>
 					<ol class="breadcrumb">
-						<li><a href="#">Download as MP3</a></li>
+						<li><a href="{{doc.filepath}}">Download as MP3</a></li>
 						<span class="breaker">/</span>
 
-						<li><a href="#">View Document</a></li>
+						<li><a data-ng-href="#!/audiodocs/{{doc._id}}">View Document</a></li>
 						<span class="breaker">/</span>
 
 						<li>

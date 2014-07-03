@@ -21,6 +21,10 @@ var AudiodocSchema = new Schema({
         type: String,
         default: ''
     },
+    filepath: {
+        type: String,
+        default: ''
+    },
     created: {
         type: Date,
         default: Date.now
