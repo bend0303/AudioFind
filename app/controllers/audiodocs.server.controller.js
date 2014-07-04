@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
     express = require('express'),
     needle = require('needle'),
     fs = require('fs'),
-    multer  = require('multer'),
     S = require('string'),
      mv = require('mv');
 
@@ -209,8 +208,39 @@ exports.sharedoc = function (req, res, next) {
 
 }
 
+exports.uploadRecordedFile = function (req,res,next)
+{
+    console.log(req.body);
+    var buf = new Buffer(req.body.data.blob, 'base64'); // decode
+    fs.writeFile('uploads\\'+req.body.subject+'.wav', buf, function(err) {
+        if(err) {
+            console.log("err", err);
+        }
+        mv('uploads\\'+req.body.subject+'.wav', 'uploads\\'+req.user._id+'\\'+req.body.subject+'.wav',{mkdirp: true}, function(err) {
+        });
+
+        var audiodoc = new Audiodoc();
+        audiodoc.user = req.user;
+        audiodoc.subject = req.body.subject;
+        audiodoc.content = req.body.content;
+        //audiodoc.filepath = 'uploads\\'+req.user._id+'\\'+req.body.subject+'.wav';
+
+        console.log(audiodoc);
+        audiodoc.save(function (err) {
+            if (err) {
+                return res.send(400, {
+                    message: getErrorMessage(err)
+                });
+            }
+        });
+    })
+
+
+}
+
 exports.uploadFile = function (req, res, next) {
     res._headers['x-frame-options'] = 'SAMEORIGIN';
+    console.log(req.files.file.originalname);
     console.log('inside uploadFile'); // <-- never reached using IE9
     var originalName = req.files.file.originalname;
 
@@ -246,6 +276,10 @@ exports.uploadFile = function (req, res, next) {
                         message: getErrorMessage(err)
                     });
                 }
+            });
+            var newFilePath = 'uploads\\'+req.user._id+'\\'+originalName;
+            mv(req.files.file.path, newFilePath,{mkdirp: true}, function(err) {
+
             });
             res.jsonp(originalName);
 

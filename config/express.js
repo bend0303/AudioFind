@@ -12,8 +12,6 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     helmet = require('helmet'),
     passport = require('passport'),
-    multer = require('multer'),
-
     mongoStore = require('connect-mongo')({
         session: session
     }),
@@ -75,16 +73,10 @@ module.exports = function (db) {
     }
 
     // Request body parsing middleware should be above methodOverride
-    app.use(bodyParser.urlencoded());
-    app.use(bodyParser.json());
+    //app.use(bodyParser.urlencoded());
+    app.use(bodyParser.json({ limit: '100mb' }));
+    //app.use(bodyParser({limit: '100mb'}));
     app.use(methodOverride());
-    //Multer module for file uploads
-    app.use(multer(
-        {    dest: './uploads/',
-            onParseStart: function () {
-                console.log('Form parsing completed at: ', new Date());
-            }
-        }));
     // Enable jsonp
     app.enable('jsonp callback');
 

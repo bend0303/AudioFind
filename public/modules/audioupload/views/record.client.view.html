@@ -1,11 +1,26 @@
 <section data-ng-init="onLoadFunc()"  ng-controller="RecorderControllerController">
-    <!--<button ng-click="buttonAction()">{{buttonDescription}}</button>-->
+    <br>
+
+    <section class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> File Recorder</strong></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" ng-model="subject">
+            </div>
+            <div id="speech-content-elements" class="form-group">
+                <textarea readonly id="speech-page-content" name="pageContent" ng-model="textarea"/>
+                <div class="speech-content-mic speech-mic"/>
+            </div>
+            <br>
+            {{textarea}}
+            <div class="panel-heading"><strong>{{afterUploadText}}</strong></div>
+            <br>
+            <button ng-click="submitRecord()" class="btn btn-primary"> Submit </button>
+        </div>
+    </section>
 
 
-    <div id="speech-content-elements">
-        <textarea readonly id="speech-page-content" name="pageContent"></textarea>
-        <div class="speech-content-mic speech-mic"/>
-    </div>
 
     <ul id="recordingslist"></ul>
 </section>

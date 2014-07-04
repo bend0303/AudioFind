@@ -14,6 +14,9 @@ module.exports = function(app) {
     app.route('/server/upload/url')
 		.post(audiodocs.uploadFile);
 
+    app.route('/uploadBlob')
+		.post(audiodocs.uploadRecordedFile);
+
 	app.route('/audiodocs/:audiodocId')
 		.get(audiodocs.read)
 		.put(users.requiresLogin, audiodocs.hasAuthorization, audiodocs.update)

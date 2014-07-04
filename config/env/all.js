@@ -33,6 +33,8 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/bootstrap-file-input/bootstrap.file-input.js',
                 'public/lib/underscore/underscore.js',
+                'public/recorder.js',
+                'public/recorderWorker.js',
                 'public/lib/ngUpload/ng-upload.js'
 			]
 		},

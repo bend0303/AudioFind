@@ -34,7 +34,8 @@ var AudiodocSchema = new Schema({
         ref: 'User'
     },
     sharedUser: {
-        type: [String]
+        type: [String],
+        default: ''
     }
 });
 AudiodocSchema.index({ content: 'text' });

@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('audioupload').controller('RecorderControllerController', ['$scope',
-	function() {
-        debugger
+angular.module('audioupload').controller('RecorderControllerController', ['$http','$scope',
+    function($http,$scope) {
         try {
             // shim
             console.log('onload');
@@ -39,6 +38,38 @@ angular.module('audioupload').controller('RecorderControllerController', ['$scop
         var textArea = angular.element('#speech-page-content');
         var textAreaID = 'speech-page-content';
         var recorder, audio_context;
+        var persistantBlob;
+
+
+        var blobToBase64 = function(blob, cb) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var dataUrl = reader.result;
+                var base64 = dataUrl.split(',')[1];
+                cb(base64);
+            };
+            reader.readAsDataURL(blob);
+        };
+
+        $scope.submitRecord = function ()
+        {
+            blobToBase64(persistantBlob, function(base64) { // encode
+                var update = {'blob': base64};
+                var data = {
+                    subject: $scope.subject,
+                    content: textArea[0].value,
+                    data: update
+                }
+                console.log('sending request');
+                var request = $http({
+                    method: "post",
+                    url: "/uploadBlob",
+                    data: data
+                });
+
+                request.success($scope.afterUploadText = 'File ' +$scope.subject + '.wav has been uploaded');
+            })
+        }
 
 
         function successCallback(stream) {
@@ -105,18 +136,7 @@ angular.module('audioupload').controller('RecorderControllerController', ['$scop
             angular.element('.speech-content-mic').removeClass('speech-mic-works').addClass('speech-mic');
             recorder && recorder.stop();
             recorder && recorder.exportWAV(function(blob) {
-                var url = URL.createObjectURL(blob);
-                var li = document.createElement('li');
-                var au = document.createElement('audio');
-                var hf = document.createElement('a');
-                au.controls = true;
-                au.src = url;
-                hf.href = url;
-                hf.download = new Date().toISOString() + '.wav';
-                hf.innerHTML = hf.download;
-                li.appendChild(au);
-                li.appendChild(hf);
-                recordingslist.appendChild(li);
+                persistantBlob = blob;
             });
             recording = false;
             recorder.clear();
@@ -143,7 +163,7 @@ angular.module('audioupload').controller('RecorderControllerController', ['$scop
             angular.element('.speech-content-mic').removeClass('speech-mic-works').addClass('speech-mic');
         };
 
-        function insertAtCaret (areaId,text) {
+        var insertAtCaret = function (areaId,text) {
             var txtarea = document.getElementById(areaId);
             var scrollPos = txtarea.scrollTop;
             var strPos = 0;
