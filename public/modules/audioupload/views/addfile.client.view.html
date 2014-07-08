@@ -25,7 +25,11 @@
 	<section ng-show="hasResults" class="panel panel-default">
 		<div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> File Uploader</strong></div>
 
-		{{uploadResponse}}
+		<h2>{{uploadResponse}}</h2>
+        <h4>File Subject:</h4>
+        <p>{{uploadContent.subject}}</p>
+        <h4>File content:</h4>
+        <p>{{uploadContent.content}}</p>
 
 	</section>
 
